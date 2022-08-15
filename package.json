@@ -10,11 +10,15 @@
     "lint": "eslint . --ext .js"
   },
   "dependencies": {
+    "@expo-google-fonts/lato": "^0.2.2",
+    "@expo-google-fonts/oswald": "^0.2.2",
     "expo": "~46.0.7",
+    "expo-font": "~10.2.0",
     "expo-status-bar": "~1.4.0",
     "react": "18.0.0",
     "react-native": "0.69.4",
     "react-native-paper": "^4.12.4",
+    "react-native-svg": "12.3.0",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
