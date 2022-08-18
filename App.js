@@ -4,8 +4,11 @@ import { ThemeProvider } from "styled-components/native";
 import { useFonts, Oswald_400Regular } from "@expo-google-fonts/oswald";
 import { useFonts as useLato, Lato_400Regular } from "@expo-google-fonts/lato";
 
-import RestaurantsScreen from "./src/features/restaurants/screens/restaurants.screen";
+import Navigation from "./src/infrastructure/navigation";
 import { theme } from "./src/infrastructure/theme";
+import { Provider as RestaurantProvider } from "./src/services/restaurants/restaurants.context";
+import { Provider as LocationProvider } from "./src/services/location/location.context";
+import { Provider as FavoritesProvider } from "./src/services/favorites/favorites.context";
 
 export default function App() {
   const [oswaldLoaded] = useFonts({
@@ -18,10 +21,17 @@ export default function App() {
   if (!oswaldLoaded || !latoLoaded) {
     return;
   }
+
   return (
     <>
       <ThemeProvider theme={theme}>
-        <RestaurantsScreen />
+        <LocationProvider>
+          <RestaurantProvider>
+            <FavoritesProvider>
+              <Navigation />
+            </FavoritesProvider>
+          </RestaurantProvider>
+        </LocationProvider>
         <ExpoStatusBar style="auto" />
       </ThemeProvider>
     </>
