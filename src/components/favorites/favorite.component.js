@@ -1,9 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 
 import { Context as FavoritesContext } from "../../services/favorites/favorites.context";
+import { Context as AuthContext } from "../../services/authentication/authentication.context";
 
 const Favorite = ({ restaurant }) => {
   const FavoriteContainer = styled(TouchableOpacity)`
@@ -17,6 +18,10 @@ const Favorite = ({ restaurant }) => {
     remove,
     state: { favorites },
   } = useContext(FavoritesContext);
+  const {
+    state: { userEmail },
+  } = useContext(AuthContext);
+
   const isFavorite = favorites.find(
     (fav) => fav.placeId === restaurant.placeId
   );
@@ -24,7 +29,9 @@ const Favorite = ({ restaurant }) => {
   return (
     <FavoriteContainer
       onPress={() =>
-        !isFavorite ? add(restaurant) : remove(restaurant.placeId)
+        !isFavorite
+          ? add(userEmail, restaurant)
+          : remove(userEmail, restaurant.placeId)
       }
     >
       <Ionicons

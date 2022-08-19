@@ -5,7 +5,9 @@ import styled from "styled-components/native";
 import CompactRestaurantInfo from "../../../components/restaurant/compact-restaurant-info.component";
 
 const MapCallout = ({ restaurant, onPress }) => {
-  return <CompactRestaurantInfo restaurant={restaurant} onPress={onPress} />;
+  return (
+    <CompactRestaurantInfo isMap restaurant={restaurant} onPress={onPress} />
+  );
 };
 
 export default MapCallout;

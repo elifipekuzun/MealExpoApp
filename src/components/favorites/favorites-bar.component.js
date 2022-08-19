@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Context as FavoritesContext } from "../../services/favorites/favorites.context";
+import { Context as AuthContext } from "../../services/authentication/authentication.context";
 import CompactRestaurantInfo from "../restaurant/compact-restaurant-info.component";
 import { Spacer } from "../spacer/spacer.component";
 import { Text } from "../typography/text.component";
@@ -13,13 +14,16 @@ const FavoritesBar = () => {
     state: { favorites },
     getFavorites,
   } = useContext(FavoritesContext);
+  const {
+    state: { userEmail },
+  } = useContext(AuthContext);
 
   const StyledView = styled.View`
     padding: 10px;
   `;
   const navigation = useNavigation();
   useEffect(() => {
-    getFavorites();
+    getFavorites(userEmail);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

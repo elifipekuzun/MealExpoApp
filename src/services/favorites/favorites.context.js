@@ -31,31 +31,34 @@ const favoritesReducer = (state, action) => {
   }
 };
 
-const getFavorites = (dispatch) => async () => {
-  const favoritesData = await AsyncStorage.getItem("favorites");
+const getFavorites = (dispatch) => async (email) => {
+  const favoritesData = await AsyncStorage.getItem(`favorites-${email}`);
+  if (!favoritesData) {
+    return;
+  }
   const favorites = JSON.parse(favoritesData);
   dispatch({ type: "GET", payload: favorites });
 };
 
-const add = (dispatch) => async (restaurant) => {
-  const favoritesJson = await AsyncStorage.getItem("favorites");
+const add = (dispatch) => async (email, restaurant) => {
+  const favoritesJson = await AsyncStorage.getItem(`favorites-${email}`);
   let favorites = [];
   if (favoritesJson) {
     favorites = JSON.parse(favoritesJson);
   }
   favorites = [...favorites, restaurant];
-  await AsyncStorage.setItem("favorites", JSON.stringify(favorites));
+  await AsyncStorage.setItem(`favorites-${email}`, JSON.stringify(favorites));
   dispatch({ type: "ADD", payload: restaurant });
 };
 
-const remove = (dispatch) => async (placeId) => {
-  const favoriteData = await AsyncStorage.getItem("favorites");
+const remove = (dispatch) => async (email, placeId) => {
+  const favoriteData = await AsyncStorage.getItem(`favorites-${email}`);
   let favorites = [];
   if (favoriteData) {
     favorites = JSON.parse(favoriteData);
   }
   favorites = favorites.filter((fav) => fav.placeId !== placeId);
-  await AsyncStorage.setItem("favorites", JSON.stringify(favorites));
+  await AsyncStorage.setItem(`favorites-${email}`, JSON.stringify(favorites));
   dispatch({ type: "REMOVE", payload: placeId });
 };
 

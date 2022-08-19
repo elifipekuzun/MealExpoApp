@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 import WebView from "react-native-webview";
 import { Text, Platform, TouchableOpacity } from "react-native";
 
-const CompactRestaurantInfo = ({ restaurant, onPress }) => {
+const CompactRestaurantInfo = ({ restaurant, onPress, isMap }) => {
   const CalloutContainer = styled.View`
     padding: ${(props) => props.theme.space[1]};
     max-width: 120px;
@@ -25,7 +25,7 @@ const CompactRestaurantInfo = ({ restaurant, onPress }) => {
     margin-top: 5px;
   `;
   const isAndroid = Platform.OS === "android";
-  const Image = isAndroid ? CompactWebview : CalloutImage;
+  const Image = isAndroid && isMap ? CompactWebview : CalloutImage;
   return (
     <TouchableOpacity onPress={onPress}>
       <CalloutContainer>
