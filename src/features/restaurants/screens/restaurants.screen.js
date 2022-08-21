@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
-import { FlatList, TouchableOpacity } from "react-native";
-import styled from "styled-components/native";
+import { TouchableOpacity } from "react-native";
 import { Spacer } from "../../../components/spacer/spacer.component";
 import { ActivityIndicator, Colors } from "react-native-paper";
+import styled from "styled-components/native";
 
 import RestaurantInfo from "../components/restaurant-info-card.component";
 import FavoritesBar from "../../../components/favorites/favorites-bar.component";
@@ -10,12 +10,12 @@ import { SafeArea } from "../../../components/utility/safe-area.component";
 import Search from "../components/search.component";
 import { Context as RestaurantContext } from "../../../services/restaurants/restaurants.context";
 import { Context as LocationContext } from "../../../services/location/location.context";
+import { RestaurantList } from "../components/restaurant-list.styles";
+import FadeInView from "../../../components/animations/fade.animation";
 
-const RestaurantList = styled(FlatList).attrs({
-  contentContainerStyle: {
-    padding: 16,
-  },
-})``;
+const LoadingIndicator = styled(ActivityIndicator)`
+  flex: 1;
+`;
 
 const RestaurantsScreen = ({ navigation }) => {
   const {
@@ -52,11 +52,10 @@ const RestaurantsScreen = ({ navigation }) => {
       />
       {isIconPress && <FavoritesBar />}
       {fetchedRests.length === 0 && (
-        <ActivityIndicator
+        <LoadingIndicator
           ranimating={true}
           color={Colors.red300}
           size={"large"}
-          style={{ flex: 1 }}
         />
       )}
       <>
@@ -70,7 +69,9 @@ const RestaurantsScreen = ({ navigation }) => {
               }
             >
               <Spacer position={"bottom"} size={"large"}>
-                <RestaurantInfo restaurant={item} />
+                <FadeInView>
+                  <RestaurantInfo restaurant={item} />
+                </FadeInView>
               </Spacer>
             </TouchableOpacity>
           )}

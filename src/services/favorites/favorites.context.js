@@ -18,13 +18,9 @@ const favoritesReducer = (state, action) => {
         favorites: [...state.favorites, action.payload],
       };
     case "REMOVE":
-      const id = action.payload;
-      const updatedFavorites = state.favorites.filter(
-        (fav) => fav.placeId !== id
-      );
       return {
         ...state,
-        favorites: updatedFavorites,
+        favorites: action.payload,
       };
     default:
       return state;
@@ -59,7 +55,7 @@ const remove = (dispatch) => async (email, placeId) => {
   }
   favorites = favorites.filter((fav) => fav.placeId !== placeId);
   await AsyncStorage.setItem(`favorites-${email}`, JSON.stringify(favorites));
-  dispatch({ type: "REMOVE", payload: placeId });
+  dispatch({ type: "REMOVE", payload: favorites });
 };
 
 export const { Context, Provider } = createDataContext(

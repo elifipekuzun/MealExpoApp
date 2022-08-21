@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import RestaurantsNavigator from "./restaurants.navigator";
 import MapNavigator from "./map.navigator";
-import SettingsScreen from "../../features/settings/screens/settings.screen";
+import SettingsNavigator from "./settings.navigator";
 import { Provider as FavoritesProvider } from "../../services/favorites/favorites.context";
 import { Provider as LocationProvider } from "../../services/location/location.context";
 import { Provider as RestaurantProvider } from "../../services/restaurants/restaurants.context";
@@ -41,7 +41,7 @@ const AppNavigator = () => {
               }}
             />
             <Tab.Screen
-              component={SettingsScreen}
+              component={SettingsNavigator}
               name="Settings"
               options={{
                 tabBarIcon: ({ color, size }) => (
