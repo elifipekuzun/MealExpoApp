@@ -1,5 +1,6 @@
 import { createDataContext } from "../create.context";
 import { initializeApp } from "firebase/app";
+
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -16,8 +17,8 @@ const firebaseConfig = {
   messagingSenderId: "1020892981525",
   appId: "1:1020892981525:web:53db5981bc05405affe11c",
 };
-
 initializeApp(firebaseConfig);
+
 const auth = getAuth();
 
 // if (!firebase.apps.length) {
