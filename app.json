@@ -18,13 +18,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.elifipek.uzun.MealsExpoApp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/playstore.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.elifipek.uzun.MealsExpoApp"
     },
     "web": {
       "favicon": "./assets/180.png"

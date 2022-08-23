@@ -16,12 +16,13 @@ import {
   NameInput,
   PayButton,
   ClearButton,
+  PaymentProcessing,
 } from "../components/checkout.styles";
 import { colors } from "../../../infrastructure/theme/colors";
 import { Text } from "../../../components/typography/text.component";
 import { Spacer } from "../../../components/spacer/spacer.component";
 
-const CheckoutScreen = () => {
+const CheckoutScreen = ({ navigation }) => {
   const {
     getCart,
     addToCart,
@@ -34,6 +35,8 @@ const CheckoutScreen = () => {
   } = useContext(AuthContext);
 
   const [creditCartName, setCreditCartName] = useState();
+  const [cartInfo, setCartInfo] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getCart(uid);
@@ -49,6 +52,26 @@ const CheckoutScreen = () => {
 
   const clearPressHandler = () => {
     clearCart();
+  };
+
+  const onPay = async () => {
+    if (!cartInfo) {
+      return navigation.navigate("checkoutError", {
+        error: "Please fill in a valid credit cart",
+      });
+    }
+    setIsLoading(true);
+    const amount = cartItems[0].quantity * cartItems[0].item.price;
+    try {
+      const result = await payRequest(cartInfo.id, amount, creditCartName);
+      setIsLoading(false);
+      clearCart();
+      navigation.navigate("checkoutSuccess");
+    } catch (error) {
+      setIsLoading(false);
+      navigation.navigate("checkoutError", { error: "Payment failed!" });
+      console.log(error);
+    }
   };
 
   if (cartItems.length === 0) {
@@ -67,6 +90,7 @@ const CheckoutScreen = () => {
     <SafeArea>
       <KeyboardAwareScrollView>
         <RestaurantInfoCard restaurant={cartItems[0].restaurant} />
+        {isLoading && <PaymentProcessing />}
         <Spacer position={"left"} size="medium">
           <Spacer position={"top"} size={"large"}>
             <Text>Your order</Text>
@@ -112,10 +136,26 @@ const CheckoutScreen = () => {
           }}
         />
         <Spacer>
-          {creditCartName && <CreditCardInput name={creditCartName} />}
+          {creditCartName && (
+            <CreditCardInput
+              name={creditCartName}
+              sendCartInfo={(info) => setCartInfo(info)}
+              onError={() =>
+                navigation.navigate("checkoutError", {
+                  error: "Something went wrong processing the credit cart",
+                })
+              }
+            />
+          )}
         </Spacer>
-        <PayButton icon="cash">Pay</PayButton>
-        <ClearButton onPress={clearPressHandler} icon="cart-off">
+        <PayButton disabled={isLoading} onPress={onPay} icon="cash">
+          Pay
+        </PayButton>
+        <ClearButton
+          disabled={isLoading}
+          onPress={clearPressHandler}
+          icon="cart-off"
+        >
           Clear the Cart
         </ClearButton>
       </KeyboardAwareScrollView>

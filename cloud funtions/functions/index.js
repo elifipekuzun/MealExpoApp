@@ -9,6 +9,26 @@ const stripeClient = require("stripe")(
 );
 
 exports.pay = functions.https.onRequest((req, res) => {
-  console.log(stripeClient);
-  res.send("Payments!");
+  const { token, amount } = JSON.parse(req.body);
+  stripeClient.paymentIntents
+    .create({
+      amount,
+      currency: "USD",
+      payment_method_types: ["card"],
+      payment_method_data: {
+        type: "card",
+        card: {
+          token,
+        },
+      },
+      confirm: true,
+    })
+    .then((paymentIntent) => {
+      res.json(paymentIntent);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400);
+      res.send("Something went wrong with your payment!");
+    });
 });

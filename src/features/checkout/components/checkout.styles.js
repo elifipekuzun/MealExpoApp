@@ -1,5 +1,11 @@
 import styled from "styled-components/native";
-import { Avatar, Button, TextInput } from "react-native-paper";
+import {
+  Avatar,
+  Button,
+  TextInput,
+  ActivityIndicator,
+  Colors,
+} from "react-native-paper";
 
 import { colors } from "../../../infrastructure/theme/colors";
 
@@ -50,4 +56,15 @@ export const ClearButton = styled(Button).attrs({
   align-self: center;
   margin-bottom: 40px;
   padding: 6px;
+`;
+
+export const PaymentProcessing = styled(ActivityIndicator).attrs({
+  animating: true,
+  color: Colors.blue300,
+  size: 128,
+})`
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  z-index: 999;
 `;
